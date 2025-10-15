@@ -693,6 +693,7 @@ static const struct sensor_driver_api pmw3610_driver_api = {
 
 static int pmw3610_pm_action(const struct device *dev, enum pm_device_action action) {
     const struct pixart_config *config = dev->config;
+    LOG_DBG("PM device action: %d, %d, %d", action, config->enable_pm_support, config->rst_gpio.port);
 
     if (!config->enable_pm_support || !config->rst_gpio.port) {
         return 0;
