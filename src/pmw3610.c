@@ -706,6 +706,12 @@ static int pmw3610_pm_action(const struct device *dev, enum pm_device_action act
     case PM_DEVICE_ACTION_RESUME:
             gpio_pin_set_dt(&config->rst_gpio, 0);
             return 0;
+    case PM_DEVICE_ACTION_TURN_OFF:
+            gpio_pin_set_dt(&config->rst_gpio, 1);
+            return 0;
+    case PM_DEVICE_ACTION_TURN_ON:
+            gpio_pin_set_dt(&config->rst_gpio, 0);
+            return 0;
     default:
         return -ENOTSUP;
     }
