@@ -768,7 +768,6 @@ static int on_activity_state(const zmk_event_t *eh) {
     LOG_INF("PM: %d → %d", prev_state, state_ev->state);
 
     const bool enable = state_ev->state != ZMK_ACTIVITY_SLEEP;
-    LOG_INF("enable: %d", enable);
     for (size_t i = 0; i < ARRAY_SIZE(pmw3610_devs); i++) {
         const struct pixart_config *config = pmw3610_devs[i]->config;
         struct pixart_data *data = pmw3610_devs[i]->data;
