@@ -702,16 +702,10 @@ static int pmw3610_pm_action(const struct device *dev, enum pm_device_action act
     switch (action) {
     case PM_DEVICE_ACTION_SUSPEND:
             gpio_pin_set_dt(&config->rst_gpio, 1);
-            return 0;
+            return pmw3610_set_interrupt(dev, false);
     case PM_DEVICE_ACTION_RESUME:
             gpio_pin_set_dt(&config->rst_gpio, 0);
-            return 0;
-    case PM_DEVICE_ACTION_TURN_OFF:
-            gpio_pin_set_dt(&config->rst_gpio, 1);
-            return 0;
-    case PM_DEVICE_ACTION_TURN_ON:
-            gpio_pin_set_dt(&config->rst_gpio, 0);
-            return 0;
+            return pmw3610_set_interrupt(dev, true);
     default:
         return -ENOTSUP;
     }
@@ -774,6 +768,7 @@ static int on_activity_state(const zmk_event_t *eh) {
     LOG_INF("PM: %d → %d", prev_state, state_ev->state);
 
     const bool enable = state_ev->state != ZMK_ACTIVITY_SLEEP;
+    LOG_INF("enable: %d", enable);
     for (size_t i = 0; i < ARRAY_SIZE(pmw3610_devs); i++) {
         const struct pixart_config *config = pmw3610_devs[i]->config;
         struct pixart_data *data = pmw3610_devs[i]->data;
